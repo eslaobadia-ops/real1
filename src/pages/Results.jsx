@@ -32,4 +32,7 @@ export default function Results() {
             </tr>
           </tbody>
         </table>
-      </div
+      </div>
+    </RequirePayment>
+  );
+}

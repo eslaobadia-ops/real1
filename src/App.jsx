@@ -1,61 +1,36 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Results from "./pages/Results";
-import Admin from "./pages/Admin";
-import Layout from "./components/Layout";
+import RequireAuth from "./components/RequireAuth";
 import RequirePayment from "./components/RequirePayment";
-import { useAuth } from "./context/AuthContext";
 
-function App() {
-  const { user } = useAuth();
-
+export default function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-
-        {/* Login */}
+        {/* PUBLIC */}
         <Route path="/" element={<Login />} />
 
-        {/* Dashboard */}
+        {/* PROTECTED */}
         <Route
           path="/dashboard"
           element={
-            <Layout>
+            <RequireAuth>
               <Dashboard />
-            </Layout>
+            </RequireAuth>
           }
         />
 
-        {/* Results (payment protected) */}
         <Route
           path="/results"
           element={
             <RequirePayment>
-              <Layout>
-                <Results />
-              </Layout>
+              <Results />
             </RequirePayment>
           }
         />
-
-        {/* Admin (role protected) */}
-        <Route
-          path="/admin"
-          element={
-            user?.role === "admin" ? (
-              <Layout>
-                <Admin />
-              </Layout>
-            ) : (
-              <Navigate to="/dashboard" />
-            )
-          }
-        />
-
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
-
-export default App;

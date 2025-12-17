@@ -1,20 +1,37 @@
-import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import AdminDashboard from "./pages/AdminDashboard";
-import Payment from "./pages/Payment";
-import Results from "./pages/Results";
+import StudentDashboard from "./pages/StudentDashboard";
+import Admin from "./pages/Admin";
+import CBT from "./pages/CBT";
+import RequirePayment from "./components/RequirePayment";
+import { useAuth } from "./context/AuthContext";
 
 export default function App() {
+  const { user } = useAuth();
+
+  if (!user) return <Login />;
+
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/payment" element={<Payment />} />
-      <Route path="/results" element={<Results />} />
+      <Route path="/" element={<StudentDashboard />} />
+
+      <Route
+        path="/cbt"
+        element={
+          <RequirePayment>
+            <CBT />
+          </RequirePayment>
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          user.role === "admin" ? <Admin /> : <Navigate to="/" />
+        }
+      />
+
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

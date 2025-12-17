@@ -1,20 +1,27 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const PaymentContext = createContext();
 
 export function PaymentProvider({ children }) {
-  const [fee] = useState(150000); // ₦150,000 default
+  const [fee, setFee] = useState(250000); // admin can change
   const [paid, setPaid] = useState(
-    localStorage.getItem("jaycrestPaid") === "true"
+    JSON.parse(localStorage.getItem("jaycrestPaid")) || false
   );
 
   function payFees() {
     setPaid(true);
-    localStorage.setItem("jaycrestPaid", "true");
+    localStorage.setItem("jaycrestPaid", true);
+  }
+
+  function resetPayment() {
+    setPaid(false);
+    localStorage.removeItem("jaycrestPaid");
   }
 
   return (
-    <PaymentContext.Provider value={{ fee, paid, payFees }}>
+    <PaymentContext.Provider
+      value={{ fee, setFee, paid, payFees, resetPayment }}
+    >
       {children}
     </PaymentContext.Provider>
   );

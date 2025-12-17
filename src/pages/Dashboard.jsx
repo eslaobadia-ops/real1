@@ -1,8 +1,8 @@
 export default function Dashboard() {
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Student Dashboard</h2>
-      <p>Welcome to Jaycrest Group of School</p>
+    <div>
+      <h1>Student Dashboard</h1>
+      <p>Welcome to Jaycrest Group of School Portal</p>
     </div>
   );
 }

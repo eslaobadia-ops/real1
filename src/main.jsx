@@ -7,13 +7,12 @@ import { PaymentProvider } from "./context/PaymentContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <PaymentProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <PaymentProvider>
           <App />
-        </BrowserRouter>
-      </PaymentProvider>
-    </AuthProvider>
+        </PaymentProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
-

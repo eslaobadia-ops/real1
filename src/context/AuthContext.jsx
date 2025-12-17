@@ -1,31 +1,19 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("jaycrestUser"))
-  );
+  const [user, setUser] = useState(null);
 
-  function login(email) {
-    const role = email.includes("admin") ? "admin" : "student";
-    const data = { email, role };
-    setUser(data);
-    localStorage.setItem("jaycrestUser", JSON.stringify(data));
-  }
-
-  function logout() {
-    setUser(null);
-    localStorage.removeItem("jaycrestUser");
-  }
+  const login = (email) => {
+    setUser({ email });
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

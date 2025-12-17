@@ -1,67 +1,61 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import StudentDashboard from "./pages/StudentDashboard";
-import Admin from "./pages/Admin";
-import CBT from "./pages/CBT";
+import Dashboard from "./pages/Dashboard";
 import Results from "./pages/Results";
-import Payment from "./pages/Payment";
+import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
 import RequirePayment from "./components/RequirePayment";
 import { useAuth } from "./context/AuthContext";
 
-export default function App() {
+function App() {
   const { user } = useAuth();
 
-  // If not logged in, show login page only
-  if (!user) return <Login />;
-
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Layout>
-            <StudentDashboard />
-          </Layout>
-        }
-      />
+    <Router>
+      <Routes>
 
-      <Route
-        path="/payment"
-        element={
-          <Layout>
-            <Payment />
-          </Layout>
-        }
-      />
+        {/* Login */}
+        <Route path="/" element={<Login />} />
 
-      <Route
-        path="/results"
-        element={
-          <Layout>
-            <RequirePayment>
-              <Results />
-            </RequirePayment>
-          </Layout>
-        }
-      />
-
-      <Route
-        path="/cbt"
-        element={
-          <Layout>
-            <RequirePayment>
-              <CBT />
-            </RequirePayment>
-          </Layout>
-        }
-      />
-
-      <Route
-        path="/admin"
-        element={
-          user.role === "admin" ? (
+        {/* Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
             <Layout>
-              <Admin />
+              <Dashboard />
             </Layout>
-          )
+          }
+        />
+
+        {/* Results (payment protected) */}
+        <Route
+          path="/results"
+          element={
+            <RequirePayment>
+              <Layout>
+                <Results />
+              </Layout>
+            </RequirePayment>
+          }
+        />
+
+        {/* Admin (role protected) */}
+        <Route
+          path="/admin"
+          element={
+            user?.role === "admin" ? (
+              <Layout>
+                <Admin />
+              </Layout>
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
+        />
+
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

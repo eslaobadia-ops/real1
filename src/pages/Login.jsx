@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const { login } = useAuth();
+  const navigate = useNavigate();
 
-  function handleLogin() {
-    if (!email) return alert("Enter email");
-    login(email);
-  }
+  const handleLogin = () => {
+    login(email); // sets auth state
+    navigate("/dashboard"); // 🔥 THIS WAS MISSING
+  };
 
   return (
-    <div style={{ padding: 60 }}>
+    <div style={{ padding: "40px" }}>
       <h1>Jaycrest Group of School</h1>
 
       <input
-        type="email"
-        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        style={{ padding: 10, width: 300 }}
+        placeholder="Email"
       />
 
       <br /><br />

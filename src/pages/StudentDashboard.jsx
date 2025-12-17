@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { usePayment } from "../context/PaymentContext";
 
 export default function StudentDashboard() {
+  const { logout } = useAuth();
   const { paid, payFees, fee } = usePayment();
 
   return (
@@ -18,10 +20,14 @@ export default function StudentDashboard() {
       <hr />
 
       <nav>
-        <Link to="/cbt">CBT Exam</Link>
-        <br />
         <Link to="/results">Results</Link>
+        <br />
+        <Link to="/cbt">CBT Exam</Link>
       </nav>
+
+      <br />
+
+      <button onClick={logout}>Logout</button>
     </div>
   );
 }

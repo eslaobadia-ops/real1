@@ -12,7 +12,7 @@ import { useAuth } from "./context/AuthContext";
 export default function App() {
   const { user } = useAuth();
 
-  // Not logged in → show login only
+  // If not logged in, show login page only
   if (!user) return <Login />;
 
   return (
@@ -27,3 +27,41 @@ export default function App() {
       />
 
       <Route
+        path="/payment"
+        element={
+          <Layout>
+            <Payment />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/results"
+        element={
+          <Layout>
+            <RequirePayment>
+              <Results />
+            </RequirePayment>
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/cbt"
+        element={
+          <Layout>
+            <RequirePayment>
+              <CBT />
+            </RequirePayment>
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          user.role === "admin" ? (
+            <Layout>
+              <Admin />
+            </Layout>
+          )

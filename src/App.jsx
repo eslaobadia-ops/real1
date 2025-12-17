@@ -17,6 +17,15 @@ export default function App() {
       <Route path="/" element={<StudentDashboard />} />
 
       <Route
+  path="/results"
+  element={
+    <RequirePayment>
+      <Results />
+    </RequirePayment>
+  }
+/>
+
+      <Route
         path="/cbt"
         element={
           <RequirePayment>
